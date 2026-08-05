@@ -40,19 +40,19 @@ function writeSettings(settings){
 
 }
 
-export function getSettings(){
+function getSettings(){
 
     return readSettings();
 
 }
 
-export function getSetting(key){
+function getSetting(key){
 
     return readSettings()[key];
 
 }
 
-export function setSetting(key,value){
+function setSetting(key,value){
 
     const settings=readSettings();
 
@@ -62,13 +62,13 @@ export function setSetting(key,value){
 
 }
 
-export function resetSettings(){
+function resetSettings(){
 
     writeSettings(DEFAULT_SETTINGS);
 
 }
 
-export function initializeStorage(){
+function initializeStorage(){
 
     if(!localStorage.getItem(STORAGE_KEY)){
 

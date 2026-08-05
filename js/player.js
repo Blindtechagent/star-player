@@ -1,6 +1,3 @@
-import {getSetting,setSetting} from "./storage.js";
-import {showPlayer,setFabMode,announce} from "./ui.js";
-
 const mediaHost=document.getElementById("mediaHost");
 const picker=document.getElementById("mediaPicker");
 
@@ -61,11 +58,14 @@ function clearPlayer(){
 
 }
 
+const playPauseIcon=document.getElementById("playPauseIcon");
+
 function createMediaElement(file){
 
     clearPlayer();
 
     objectUrl=URL.createObjectURL(file);
+    const artworkContainer=document.getElementById("artworkContainer");
 
     if(file.type.startsWith("video/")){
 
@@ -74,10 +74,20 @@ function createMediaElement(file){
         player.style.width="100%";
 
         player.style.borderRadius="16px";
+        
+        mediaHost.removeAttribute("hidden");
+        if(artworkContainer) {
+            artworkContainer.classList.add("hidden");
+        }
 
     }else{
 
         player=document.createElement("audio");
+        
+        mediaHost.setAttribute("hidden", "true");
+        if(artworkContainer) {
+            artworkContainer.classList.remove("hidden");
+        }
 
     }
 
@@ -149,7 +159,11 @@ function registerMediaEvents(){
 
     player.addEventListener("play",()=>{
 
-        playButton.firstChild.textContent="⏸";
+        if(playPauseIcon) {
+            playPauseIcon.textContent="⏸";
+        } else {
+            playButton.firstChild.textContent="⏸";
+        }
 
         playButton.lastElementChild.textContent="Pause";
 
@@ -159,7 +173,11 @@ function registerMediaEvents(){
 
     player.addEventListener("pause",()=>{
 
-        playButton.firstChild.textContent="▶";
+        if(playPauseIcon) {
+            playPauseIcon.textContent="▶";
+        } else {
+            playButton.firstChild.textContent="▶";
+        }
 
         playButton.lastElementChild.textContent="Play";
 
@@ -183,7 +201,7 @@ function registerMediaEvents(){
 
 }
 
-export function openMedia(file){
+function openMedia(file){
 
     createMediaElement(file);
 
@@ -196,7 +214,8 @@ export function openMedia(file){
     announce(`${file.name} selected`);
 
 }
-export function playPause(){
+
+function playPause(){
 
     if(!player){
         return;
@@ -217,7 +236,7 @@ export function playPause(){
 
 }
 
-export function stop(){
+function stop(){
 
     if(!player){
         return;
@@ -308,25 +327,25 @@ function registerControlEvents(){
 
 }
 
-export function getCurrentMedia(){
+function getCurrentMedia(){
 
     return currentFile;
 
 }
 
-export function getPlayer(){
+function getPlayer(){
 
     return player;
 
 }
 
-export function isMediaLoaded(){
+function isMediaLoaded(){
 
     return player!==null;
 
 }
 
-export function initializePlayer(){
+function initializePlayer(){
 
     registerControlEvents();
 

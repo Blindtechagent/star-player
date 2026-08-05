@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
 
     <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+          content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 
     <meta name="theme-color"
           content="#1565C0">
@@ -29,13 +29,6 @@ try{
 </head>
 
 <body>
-
-    <a href="#mainContent"
-       class="skip-link">
-
-        Skip to main content
-
-    </a>
 
     <div id="drawerOverlay"
          class="drawer-overlay hidden"
@@ -67,6 +60,32 @@ try{
         </div>
 
         <nav>
+
+            <button id="homeButton"
+                    class="drawer-button active">
+
+                <span aria-hidden="true">
+
+                    🏠
+
+                </span>
+
+                <span>Home</span>
+
+            </button>
+
+            <button id="playerButton"
+                    class="drawer-button">
+
+                <span aria-hidden="true">
+
+                    🎵
+
+                </span>
+
+                <span>Now Playing</span>
+
+            </button>
 
             <button id="settingsButton"
                     class="drawer-button">
@@ -124,7 +143,7 @@ try{
 
     </aside>
 
-    <header>
+    <header id="appHeader">
 
         <button id="menuButton"
                 class="icon-button"
@@ -136,20 +155,27 @@ try{
 
         </button>
 
-        <div class="header-logo"
-             aria-hidden="true">
+        <button id="backButton"
+                class="icon-button hidden"
+                aria-label="Go back">
 
-            ⭐
+            ←
 
-        </div>
+        </button>
 
         <div class="header-title">
 
-            <h1>Star Player</h1>
-
-            <p>Accessible Audio & Video Player</p>
+            <h1 id="headerTitle">Star Player</h1>
 
         </div>
+
+        <button id="toolbarOpenFileButton"
+                class="icon-button hidden"
+                aria-label="Open audio or video file">
+
+            📂
+
+        </button>
 
     </header>
 
@@ -178,6 +204,16 @@ try{
                 <p>Select <strong>Open File</strong> to browse your
                     device and start playing media.</p>
 
+                <button id="openFileButton"
+                        class="primary-action-btn"
+                        aria-label="Open audio or video file">
+
+                    <span id="fabIcon" aria-hidden="true">📂</span>
+
+                    <span id="fabText">Open File</span>
+
+                </button>
+
             </section>
 
         </section>
@@ -186,7 +222,7 @@ try{
                  class="screen hidden"
                  aria-labelledby="playerHeading">
 
-            <h2 id="playerHeading">
+            <h2 id="playerHeading" class="visually-hidden">
 
                 Now Playing
 
@@ -212,6 +248,9 @@ try{
 
                 </div>
 
+                <div id="mediaHost"
+                     hidden></div>
+
                 <section class="media-information">
 
                     <h3 id="mediaTitle">
@@ -227,47 +266,7 @@ try{
                     </p>
 
                 </section>
-                <section class="player-controls"
-                         aria-label="Playback Controls">
-
-                    <button id="previousButton"
-                            class="control-button"
-                            aria-label="Previous">
-
-                        ⏮
-                        <span>Previous</span>
-
-                    </button>
-
-                    <button id="playPauseButton"
-                            class="control-button primary-button"
-                            aria-label="Play">
-
-                        ▶
-                        <span>Play</span>
-
-                    </button>
-
-                    <button id="stopButton"
-                            class="control-button"
-                            aria-label="Stop">
-
-                        ⏹
-                        <span>Stop</span>
-
-                    </button>
-
-                    <button id="nextButton"
-                            class="control-button"
-                            aria-label="Next">
-
-                        ⏭
-                        <span>Next</span>
-
-                    </button>
-
-                </section>
-
+                
                 <section class="progress-section">
 
                     <label for="seekBar">
@@ -300,6 +299,47 @@ try{
                            max="100"
                            value="0"
                            aria-label="Playback Position">
+
+                </section>
+
+                <section class="player-controls"
+                         aria-label="Playback Controls">
+
+                    <button id="previousButton"
+                            class="control-button"
+                            aria-label="Previous">
+
+                        <span>⏮</span>
+                        <span>Previous</span>
+
+                    </button>
+
+                    <button id="playPauseButton"
+                            class="control-button primary-button"
+                            aria-label="Play">
+
+                        <span id="playPauseIcon">▶</span>
+                        <span>Play</span>
+
+                    </button>
+
+                    <button id="stopButton"
+                            class="control-button"
+                            aria-label="Stop">
+
+                        <span>⏹</span>
+                        <span>Stop</span>
+
+                    </button>
+
+                    <button id="nextButton"
+                            class="control-button"
+                            aria-label="Next">
+
+                        <span>⏭</span>
+                        <span>Next</span>
+
+                    </button>
 
                 </section>
 
@@ -381,35 +421,35 @@ try{
 
             <h2>Settings</h2>
 
-            <fieldset>
+            <div class="settings-list">
+                
+                <fieldset class="settings-card">
 
-                <legend>
+                    <legend>Theme</legend>
 
-                    Theme
+                    <label class="radio-label">
 
-                </legend>
+                        <input type="radio"
+                               name="theme"
+                               value="light">
 
-                <label>
+                        <span>Light</span>
 
-                    <input type="radio"
-                           name="theme"
-                           value="light">
+                    </label>
 
-                    Light
+                    <label class="radio-label">
 
-                </label>
+                        <input type="radio"
+                               name="theme"
+                               value="dark">
 
-                <label>
+                        <span>Dark</span>
 
-                    <input type="radio"
-                           name="theme"
-                           value="dark">
+                    </label>
 
-                    Dark
+                </fieldset>
 
-                </label>
-
-            </fieldset>
+            </div>
 
         </section>
 
@@ -418,11 +458,11 @@ try{
 
             <h2>Contact</h2>
 
-            <p>Email</p>
-
-            <p>Website</p>
-
-            <p>GitHub</p>
+            <div class="info-card">
+                <p><strong>Email:</strong> support@starplayer.com</p>
+                <p><strong>Website:</strong> www.starplayer.com</p>
+                <p><strong>GitHub:</strong> github.com/starplayer</p>
+            </div>
 
         </section>
 
@@ -431,13 +471,12 @@ try{
 
             <h2>About</h2>
 
-            <p>Star Player</p>
-
-            <p>Version 1.0.0</p>
-
-            <p>Developer: Pawan Kumar</p>
-
-            <p>Built with HTML, CSS, JavaScript and Capacitor.</p>
+            <div class="info-card">
+                <h3>Star Player</h3>
+                <p>Version 1.0.0</p>
+                <p>Developer: Pawan Kumar</p>
+                <p>Built with HTML, CSS, JavaScript and Capacitor.</p>
+            </div>
 
         </section>
 
@@ -446,60 +485,33 @@ try{
 
             <h2>Terms & Privacy Policy</h2>
 
-            <p>Terms of Use</p>
-
-            <p>Privacy Policy</p>
+            <div class="info-card">
+                <h3>Terms of Use</h3>
+                <p>Use Star Player responsibly to play your personal audio and video files.</p>
+                
+                <h3>Privacy Policy</h3>
+                <p>Star Player values your privacy. We process your audio and video locally. None of your media files or user activity data are sent to any server.</p>
+            </div>
 
         </section>
 
     </main>
-
-    <button id="openFileButton"
-            class="floating-button"
-            aria-label="Open audio or video file">
-
-        <span id="fabIcon"
-              aria-hidden="true">
-
-            📂
-
-        </span>
-
-        <span id="fabText">
-
-            Open File
-
-        </span>
-
-    </button>
 
     <input type="file"
            id="mediaPicker"
            accept="audio/*,video/*"
            hidden>
 
-    <div id="mediaHost"
-         hidden></div>
-
     <div id="liveRegion"
          class="visually-hidden"
          aria-live="polite"
          aria-atomic="true"></div>
 
-    <script type="module"
-            src="js/storage.js"></script>
-
-    <script type="module"
-            src="js/player.js"></script>
-
-    <script type="module"
-            src="js/playlist.js"></script>
-
-    <script type="module"
-            src="js/ui.js"></script>
-
-    <script type="module"
-            src="js/app.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/playlist.js"></script>
+    <script src="js/app.js"></script>
 
 </body>
 

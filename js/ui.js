@@ -1,5 +1,3 @@
-import {getSetting,setSetting} from "./storage.js";
-
 const screens={
     home:document.getElementById("homeScreen"),
     player:document.getElementById("playerScreen"),
@@ -12,189 +10,210 @@ const screens={
 const drawer=document.getElementById("navigationDrawer");
 const overlay=document.getElementById("drawerOverlay");
 const menuButton=document.getElementById("menuButton");
+const backButton=document.getElementById("backButton");
+const headerTitle=document.getElementById("headerTitle");
 const liveRegion=document.getElementById("liveRegion");
-const fab=document.getElementById("openFileButton");
-const fabText=document.getElementById("fabText");
+const toolbarOpenFileButton=document.getElementById("toolbarOpenFileButton");
 
 let currentScreen="home";
 
-export function announce(message){
-
+function announce(message){
     liveRegion.textContent="";
-
     setTimeout(()=>{
         liveRegion.textContent=message;
     },50);
-
 }
 
-export function openDrawer(){
-
-    drawer.classList.add("open");
-    overlay.classList.add("active");
-
-    drawer.setAttribute("aria-hidden","false");
-    overlay.setAttribute("aria-hidden","false");
-
-    menuButton.setAttribute("aria-expanded","true");
-
-    announce("Navigation menu opened");
-
+function openDrawer(){
+    if (drawer && overlay) {
+        drawer.classList.add("open");
+        overlay.classList.add("active");
+        drawer.setAttribute("aria-hidden","false");
+        overlay.setAttribute("aria-hidden","false");
+        if (menuButton) menuButton.setAttribute("aria-expanded","true");
+        announce("Navigation menu opened");
+    }
 }
 
-export function closeDrawer(){
-
-    drawer.classList.remove("open");
-    overlay.classList.remove("active");
-
-    drawer.setAttribute("aria-hidden","true");
-    overlay.setAttribute("aria-hidden","true");
-
-    menuButton.setAttribute("aria-expanded","false");
-    menuButton.focus();
-
+function closeDrawer(){
+    if (drawer && overlay) {
+        drawer.classList.remove("open");
+        overlay.classList.remove("active");
+        drawer.setAttribute("aria-hidden","true");
+        overlay.setAttribute("aria-hidden","true");
+        if (menuButton) {
+            menuButton.setAttribute("aria-expanded","false");
+            menuButton.focus();
+        }
+    }
 }
 
-export function toggleDrawer(){
-
-    if(drawer.classList.contains("open")){
+function toggleDrawer(){
+    if (drawer && drawer.classList.contains("open")){
         closeDrawer();
     }else{
         openDrawer();
     }
-
 }
 
-export function showScreen(name){
-
+function showScreen(name){
+    // Hide all screens
     Object.values(screens).forEach(screen=>{
-        screen.classList.add("hidden");
+        if (screen) screen.classList.add("hidden");
     });
 
-    screens[name].classList.remove("hidden");
+    // Show target screen
+    if (screens[name]) {
+        screens[name].classList.remove("hidden");
+    }
 
     currentScreen=name;
-
     closeDrawer();
 
-    const heading=screens[name].querySelector("h2");
+    // Highlight active item in the drawer
+    const drawerButtons = document.querySelectorAll(".drawer-button");
+    drawerButtons.forEach(btn => {
+        if (btn.id === `${name}Button`) {
+            btn.classList.add("active");
+        } else {
+            btn.classList.remove("active");
+        }
+    });
 
+    // Update App Bar Title, Back Button, and Toolbar Actions
+    if (name === "home" || name === "player") {
+        if (backButton) backButton.classList.add("hidden");
+        if (menuButton) menuButton.classList.remove("hidden");
+        if (headerTitle) {
+            headerTitle.textContent = name === "home" ? "Star Player" : "Now Playing";
+        }
+        
+        // Show folder shortcut in top bar when on Player screen so they can open a new file
+        if (toolbarOpenFileButton) {
+            if (name === "player") {
+                toolbarOpenFileButton.classList.remove("hidden");
+            } else {
+                toolbarOpenFileButton.classList.add("hidden");
+            }
+        }
+    } else {
+        // Show Back Button for sub-screens (Settings, Contact, About, Privacy)
+        if (backButton) backButton.classList.remove("hidden");
+        if (menuButton) menuButton.classList.add("hidden");
+        if (toolbarOpenFileButton) toolbarOpenFileButton.classList.add("hidden");
+        
+        if (headerTitle) {
+            if (name==="settings") headerTitle.textContent="Settings";
+            if (name==="contact") headerTitle.textContent="Contact Support";
+            if (name==="about") headerTitle.textContent="About Star Player";
+            if (name==="privacy") headerTitle.textContent="Privacy Policy";
+        }
+    }
+
+    const heading=screens[name] ? screens[name].querySelector("h2") : null;
     if(heading){
         announce(heading.textContent);
+    } else if (headerTitle) {
+        announce(headerTitle.textContent);
     }
-
 }
 
-export function showHome(){
-
+function showHome(){
     showScreen("home");
-
 }
 
-export function showPlayer(){
-
+function showPlayer(){
     showScreen("player");
-
     setFabMode(true);
-
 }
 
-export function getCurrentScreen(){
-
+function getCurrentScreen(){
     return currentScreen;
-
 }
 
-export function setFabMode(mediaLoaded){
-
-    if(mediaLoaded){
-
-        fabText.textContent="Open Another File";
-
-        fab.setAttribute(
-            "aria-label",
-            "Open another audio or video file"
-        );
-
-    }else{
-
-        fabText.textContent="Open File";
-
-        fab.setAttribute(
-            "aria-label",
-            "Open audio or video file"
-        );
-
+function setFabMode(mediaLoaded){
+    const fabText = document.getElementById("fabText");
+    const openFileButton = document.getElementById("openFileButton");
+    
+    if (fabText) {
+        fabText.textContent = mediaLoaded ? "Open Another File" : "Open File";
     }
-
+    if (openFileButton) {
+        openFileButton.setAttribute("aria-label", mediaLoaded ? "Open another audio or video file" : "Open audio or video file");
+    }
 }
 
-export function loadTheme(){
-
+function loadTheme(){
     const theme=getSetting("theme");
-
     document.documentElement.dataset.theme=theme;
 
-    const radio=document.querySelector(
-        `input[name="theme"][value="${theme}"]`
-    );
-
+    const radio=document.querySelector(`input[name="theme"][value="${theme}"]`);
     if(radio){
         radio.checked=true;
     }
-
 }
 
-export function saveTheme(theme){
-
+function saveTheme(theme){
     document.documentElement.dataset.theme=theme;
-
     setSetting("theme",theme);
-
     announce(`${theme} theme selected`);
-
 }
 
-export function initializeUI(){
-
+function initializeUI(){
     loadTheme();
 
-    menuButton.addEventListener("click",toggleDrawer);
+    // Drawer toggling events
+    if (menuButton) menuButton.addEventListener("click", toggleDrawer);
+    if (overlay) overlay.addEventListener("click", closeDrawer);
 
-    overlay.addEventListener("click",closeDrawer);
+    // Back Button goes back to Home or Settings
+    if (backButton) {
+        backButton.addEventListener("click", () => {
+            if (["contact", "about", "privacy"].includes(currentScreen)) {
+                showScreen("settings");
+            } else {
+                showScreen("home");
+            }
+        });
+    }
 
+    // Android back key handling support
     document.addEventListener("keydown",event=>{
-
-        if(event.key==="Escape"){
-            closeDrawer();
+        if(event.key==="Escape" || event.key==="Backspace"){
+            if (drawer && drawer.classList.contains("open")) {
+                event.preventDefault();
+                closeDrawer();
+            } else if (["contact", "about", "privacy"].includes(currentScreen)) {
+                event.preventDefault();
+                showScreen("settings");
+            } else if (currentScreen!=="home") {
+                event.preventDefault();
+                showScreen("home");
+            }
         }
-
     });
 
-    document.getElementById("settingsButton")
-        .addEventListener("click",()=>showScreen("settings"));
+    // Register drawer menu button listeners
+    const homeBtn = document.getElementById("homeButton");
+    const playerBtn = document.getElementById("playerButton");
+    const settingsBtn = document.getElementById("settingsButton");
+    const contactBtn = document.getElementById("contactButton");
+    const aboutBtn = document.getElementById("aboutButton");
+    const privacyBtn = document.getElementById("privacyButton");
 
-    document.getElementById("contactButton")
-        .addEventListener("click",()=>showScreen("contact"));
+    if (homeBtn) homeBtn.addEventListener("click", () => showScreen("home"));
+    if (playerBtn) playerBtn.addEventListener("click", () => showScreen("player"));
+    if (settingsBtn) settingsBtn.addEventListener("click", () => showScreen("settings"));
+    if (contactBtn) contactBtn.addEventListener("click", () => showScreen("contact"));
+    if (aboutBtn) aboutBtn.addEventListener("click", () => showScreen("about"));
+    if (privacyBtn) privacyBtn.addEventListener("click", () => showScreen("privacy"));
 
-    document.getElementById("aboutButton")
-        .addEventListener("click",()=>showScreen("about"));
-
-    document.getElementById("privacyButton")
-        .addEventListener("click",()=>showScreen("privacy"));
-
-    document
-        .querySelectorAll('input[name="theme"]')
-        .forEach(radio=>{
-
-            radio.addEventListener("change",()=>{
-
-                saveTheme(radio.value);
-
-            });
-
+    // Theme selector options listener
+    document.querySelectorAll('input[name="theme"]').forEach(radio=>{
+        radio.addEventListener("change",()=>{
+            saveTheme(radio.value);
         });
+    });
 
     setFabMode(false);
-
 }

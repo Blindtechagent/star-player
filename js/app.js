@@ -1,7 +1,5 @@
-import {initializeUI} from "./ui.js";
-import {initializePlayer} from "./player.js";
-
 const openFileButton=document.getElementById("openFileButton");
+const toolbarOpenFileButton=document.getElementById("toolbarOpenFileButton");
 const mediaPicker=document.getElementById("mediaPicker");
 
 function initializeApplication(){
@@ -10,11 +8,17 @@ function initializeApplication(){
 
     initializePlayer();
 
-    openFileButton.addEventListener("click",()=>{
+    if (openFileButton) {
+        openFileButton.addEventListener("click",()=>{
+            mediaPicker.click();
+        });
+    }
 
-        mediaPicker.click();
-
-    });
+    if (toolbarOpenFileButton) {
+        toolbarOpenFileButton.addEventListener("click",()=>{
+            mediaPicker.click();
+        });
+    }
 
 }
 
