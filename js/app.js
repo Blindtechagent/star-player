@@ -1,8 +1,7 @@
-const openFileButton=document.getElementById("openFileButton");
-const toolbarOpenFileButton=document.getElementById("toolbarOpenFileButton");
-const mediaPicker=document.getElementById("mediaPicker");
-
 function initializeApplication(){
+    const openFileButton=document.getElementById("openFileButton");
+    const toolbarOpenFileButton=document.getElementById("toolbarOpenFileButton");
+    const mediaPicker=document.getElementById("mediaPicker");
 
     initializeUI();
 
