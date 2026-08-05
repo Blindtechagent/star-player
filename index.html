@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color"
+          content="#1565C0">
+
+    <meta name="description"
+          content="Star Player - Accessible audio and video player.">
+
+    <title>Star Player</title>
+<script>
+try{
+    const settings=JSON.parse(localStorage.getItem("starPlayerSettings"));
+    if(settings&&settings.theme){
+        document.documentElement.dataset.theme=settings.theme;
+    }
+}catch(error){}
+</script>
+    <link rel="stylesheet"
+          href="css/style.css">
+
+</head>
+
+<body>
+
+    <a href="#mainContent"
+       class="skip-link">
+
+        Skip to main content
+
+    </a>
+
+    <div id="drawerOverlay"
+         class="drawer-overlay hidden"
+         tabindex="-1"
+         aria-hidden="true"></div>
+
+    <aside id="navigationDrawer"
+           class="navigation-drawer"
+           aria-label="Navigation Menu"
+           aria-hidden="true">
+
+        <div class="drawer-header">
+
+            <div class="drawer-logo"
+                 aria-hidden="true">
+
+                ⭐
+
+            </div>
+
+            <div>
+
+                <h2>Star Player</h2>
+
+                <p>Accessible Media Player</p>
+
+            </div>
+
+        </div>
+
+        <nav>
+
+            <button id="settingsButton"
+                    class="drawer-button">
+
+                <span aria-hidden="true">
+
+                    ⚙️
+
+                </span>
+
+                <span>Settings</span>
+
+            </button>
+
+            <button id="contactButton"
+                    class="drawer-button">
+
+                <span aria-hidden="true">
+
+                    📧
+
+                </span>
+
+                <span>Contact</span>
+
+            </button>
+
+            <button id="aboutButton"
+                    class="drawer-button">
+
+                <span aria-hidden="true">
+
+                    ℹ️
+
+                </span>
+
+                <span>About</span>
+
+            </button>
+
+            <button id="privacyButton"
+                    class="drawer-button">
+
+                <span aria-hidden="true">
+
+                    📄
+
+                </span>
+
+                <span>Terms & Privacy Policy</span>
+
+            </button>
+
+        </nav>
+
+    </aside>
+
+    <header>
+
+        <button id="menuButton"
+                class="icon-button"
+                aria-label="Open navigation menu"
+                aria-controls="navigationDrawer"
+                aria-expanded="false">
+
+            ☰
+
+        </button>
+
+        <div class="header-logo"
+             aria-hidden="true">
+
+            ⭐
+
+        </div>
+
+        <div class="header-title">
+
+            <h1>Star Player</h1>
+
+            <p>Accessible Audio & Video Player</p>
+
+        </div>
+
+    </header>
+
+    <main id="mainContent">
+
+        <section id="homeScreen"
+                 class="screen">
+
+            <h2>Welcome to Star Player</h2>
+
+            <p>Star Player is a simple, modern and accessible media
+                player designed for everyone, including screen reader
+                users.</p>
+
+            <section class="empty-state"
+                     aria-labelledby="emptyStateHeading">
+
+                <h3 id="emptyStateHeading">
+
+                    No Media Playing
+
+                </h3>
+
+                <p>No audio or video is currently playing.</p>
+
+                <p>Select <strong>Open File</strong> to browse your
+                    device and start playing media.</p>
+
+            </section>
+
+        </section>
+
+        <section id="playerScreen"
+                 class="screen hidden"
+                 aria-labelledby="playerHeading">
+
+            <h2 id="playerHeading">
+
+                Now Playing
+
+            </h2>
+
+            <div id="mediaContainer"
+                 class="media-container">
+
+                <div id="artworkContainer"
+                     class="artwork-container">
+
+                    <img id="artworkImage"
+                         alt="Album artwork"
+                         hidden>
+
+                    <div id="artworkPlaceholder"
+                         class="artwork-placeholder"
+                         aria-hidden="true">
+
+                        🎵
+
+                    </div>
+
+                </div>
+
+                <section class="media-information">
+
+                    <h3 id="mediaTitle">
+
+                        No media selected
+
+                    </h3>
+
+                    <p id="mediaArtist">
+
+                        Unknown Artist
+
+                    </p>
+
+                </section>
+                <section class="player-controls"
+                         aria-label="Playback Controls">
+
+                    <button id="previousButton"
+                            class="control-button"
+                            aria-label="Previous">
+
+                        ⏮
+                        <span>Previous</span>
+
+                    </button>
+
+                    <button id="playPauseButton"
+                            class="control-button primary-button"
+                            aria-label="Play">
+
+                        ▶
+                        <span>Play</span>
+
+                    </button>
+
+                    <button id="stopButton"
+                            class="control-button"
+                            aria-label="Stop">
+
+                        ⏹
+                        <span>Stop</span>
+
+                    </button>
+
+                    <button id="nextButton"
+                            class="control-button"
+                            aria-label="Next">
+
+                        ⏭
+                        <span>Next</span>
+
+                    </button>
+
+                </section>
+
+                <section class="progress-section">
+
+                    <label for="seekBar">
+
+                        Playback Position
+
+                    </label>
+
+                    <div class="time-display">
+
+                        <span id="currentTime">
+
+                            00:00
+
+                        </span>
+
+                        <span>/</span>
+
+                        <span id="totalTime">
+
+                            00:00
+
+                        </span>
+
+                    </div>
+
+                    <input type="range"
+                           id="seekBar"
+                           min="0"
+                           max="100"
+                           value="0"
+                           aria-label="Playback Position">
+
+                </section>
+
+                <section class="volume-section">
+
+                    <label for="volumeSlider">
+
+                        Volume
+
+                    </label>
+
+                    <input type="range"
+                           id="volumeSlider"
+                           min="0"
+                           max="100"
+                           value="100"
+                           aria-label="Volume">
+
+                </section>
+
+                <section class="speed-section">
+
+                    <label for="playbackSpeed">
+
+                        Playback Speed
+
+                    </label>
+
+                    <select id="playbackSpeed"
+                            aria-label="Playback Speed">
+
+                        <option value="0.5">
+
+                            0.5×
+
+                        </option>
+
+                        <option value="0.75">
+
+                            0.75×
+
+                        </option>
+
+                        <option value="1"
+                                selected>
+
+                            1×
+
+                        </option>
+
+                        <option value="1.25">
+
+                            1.25×
+
+                        </option>
+
+                        <option value="1.5">
+
+                            1.5×
+
+                        </option>
+
+                        <option value="2">
+
+                            2×
+
+                        </option>
+
+                    </select>
+
+                </section>
+
+            </div>
+
+        </section>
+
+        <section id="settingsScreen"
+                 class="screen hidden">
+
+            <h2>Settings</h2>
+
+            <fieldset>
+
+                <legend>
+
+                    Theme
+
+                </legend>
+
+                <label>
+
+                    <input type="radio"
+                           name="theme"
+                           value="light">
+
+                    Light
+
+                </label>
+
+                <label>
+
+                    <input type="radio"
+                           name="theme"
+                           value="dark">
+
+                    Dark
+
+                </label>
+
+            </fieldset>
+
+        </section>
+
+        <section id="contactScreen"
+                 class="screen hidden">
+
+            <h2>Contact</h2>
+
+            <p>Email</p>
+
+            <p>Website</p>
+
+            <p>GitHub</p>
+
+        </section>
+
+        <section id="aboutScreen"
+                 class="screen hidden">
+
+            <h2>About</h2>
+
+            <p>Star Player</p>
+
+            <p>Version 1.0.0</p>
+
+            <p>Developer: Pawan Kumar</p>
+
+            <p>Built with HTML, CSS, JavaScript and Capacitor.</p>
+
+        </section>
+
+        <section id="privacyScreen"
+                 class="screen hidden">
+
+            <h2>Terms & Privacy Policy</h2>
+
+            <p>Terms of Use</p>
+
+            <p>Privacy Policy</p>
+
+        </section>
+
+    </main>
+
+    <button id="openFileButton"
+            class="floating-button"
+            aria-label="Open audio or video file">
+
+        <span id="fabIcon"
+              aria-hidden="true">
+
+            📂
+
+        </span>
+
+        <span id="fabText">
+
+            Open File
+
+        </span>
+
+    </button>
+
+    <input type="file"
+           id="mediaPicker"
+           accept="audio/*,video/*"
+           hidden>
+
+    <div id="mediaHost"
+         hidden></div>
+
+    <div id="liveRegion"
+         class="visually-hidden"
+         aria-live="polite"
+         aria-atomic="true"></div>
+
+    <script type="module"
+            src="js/storage.js"></script>
+
+    <script type="module"
+            src="js/player.js"></script>
+
+    <script type="module"
+            src="js/playlist.js"></script>
+
+    <script type="module"
+            src="js/ui.js"></script>
+
+    <script type="module"
+            src="js/app.js"></script>
+
+</body>
+
+</html>
