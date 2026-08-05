@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Star Player</string>
+    <string name="title_activity_main">Star Player</string>
+    <string name="package_name">com.blindtechagent.starplayer</string>
+    <string name="custom_url_scheme">com.blindtechagent.starplayer</string>
+</resources>

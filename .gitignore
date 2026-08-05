@@ -1,0 +1,22 @@
+# Node.js
+node_modules/
+
+# Build output
+www/
+
+# Android
+android/.gradle/
+android/local.properties
+android/app/build/
+android/build/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
